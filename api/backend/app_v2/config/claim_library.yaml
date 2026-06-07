@@ -1,0 +1,63 @@
+# Phase 2 claim library
+# Claims are approved observable statements that can be assured using evidence.
+
+claims:
+  - claim_id: SERVICE_EXISTS
+    name: Service Exists
+    category: availability
+    description: Verifies that a required service is observed in Dynatrace.
+
+  - claim_id: SERVICE_HEALTHY
+    name: Service Healthy
+    category: availability
+    description: Verifies that a service exists and has acceptable health metrics.
+
+  - claim_id: SERVICE_SCALABLE
+    name: Service Scalable
+    category: availability
+    description: Verifies that a service has sufficient instances and scaling capability to support demand.
+
+  - claim_id: SERVICE_REDUNDANT
+    name: Service Redundant
+    category: availability
+    description: Verifies that a service has more than one runtime instance and avoids single-instance dependency risk.
+
+  - claim_id: SERVICE_RECOVERABLE
+    name: Service Recoverable
+    category: availability
+    description: Verifies that a service has recovery signals such as restart capability, recent availability, and absence of unresolved problems.
+
+  - claim_id: DEPENDENCY_AVAILABLE
+    name: Dependency Available
+    category: architecture_dependency
+    description: Verifies that required runtime dependencies are observed and available.
+
+  - claim_id: LOAD_BALANCER_OPERATIONAL
+    name: Load Balancer Operational
+    category: availability
+    description: Verifies that load balancing or traffic distribution evidence is present for the service.
+
+  - claim_id: CAPACITY_SUFFICIENT
+    name: Capacity Sufficient
+    category: capacity_management
+    description: Verifies that runtime resource usage remains within acceptable capacity thresholds.
+
+  - claim_id: LATENCY_WITHIN_LIMITS
+    name: Latency Within Limits
+    category: performance
+    description: Verifies that observed service response time remains within approved latency limits.
+
+  - claim_id: CONTAINER_EXISTS
+    name: Container Exists
+    category: runtime
+    description: Verifies that a required container is observed in Dynatrace.
+
+  - claim_id: DEPENDENCY_EXISTS
+    name: Dependency Exists
+    category: topology
+    description: Verifies that an expected runtime dependency is observed.
+
+  - claim_id: NO_ACTIVE_PROBLEMS
+    name: No Active Problems
+    category: operations
+    description: Verifies that no active Dynatrace problems are associated with the entity.

@@ -6,7 +6,7 @@ from fastapi import FastAPI
 from pydantic import BaseModel
 
 
-ROOT_DIR = Path(__file__).resolve().parents[1]
+ROOT_DIR = Path(__file__).resolve().parent
 APP_DIR = ROOT_DIR / "backend" / "app_v2"
 sys.path.append(str(APP_DIR))
 
