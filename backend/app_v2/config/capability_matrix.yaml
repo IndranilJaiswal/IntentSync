@@ -1,0 +1,87 @@
+SERVICE_EXISTS:
+  evidence:
+    - service_entity
+  entity_type: SERVICE
+  verifiability: EXECUTABLE
+
+SERVICE_HEALTHY:
+  evidence:
+    - response_time
+    - failure_rate
+    - active_problems
+  entity_type: SERVICE
+  verifiability: EXECUTABLE
+
+SERVICE_SCALABLE:
+  evidence:
+    - service_instance_count
+    - cpu_utilization
+    - request_throughput
+  entity_type: SERVICE
+  verifiability: EXECUTABLE
+
+SERVICE_REDUNDANT:
+  evidence:
+    - service_instance_count
+    - host_count
+  entity_type: SERVICE
+  verifiability: EXECUTABLE
+
+SERVICE_RECOVERABLE:
+  evidence:
+    - restart_events
+    - active_problems
+    - recent_availability
+  entity_type: SERVICE
+  verifiability: EXECUTABLE
+
+DEPENDENCY_AVAILABLE:
+  evidence:
+    - dependency_entity
+    - dependency_call_success_rate
+    - dependency_response_time
+  entity_type: DEPENDENCY
+  verifiability: EXECUTABLE
+
+LOAD_BALANCER_OPERATIONAL:
+  evidence:
+    - load_balancer_entity
+    - backend_service_count
+    - request_distribution
+  entity_type: LOAD_BALANCER
+  verifiability: EXECUTABLE
+
+CAPACITY_SUFFICIENT:
+  evidence:
+    - cpu_utilization
+    - memory_utilization
+    - disk_utilization
+    - request_throughput
+  entity_type: SERVICE
+  verifiability: EXECUTABLE
+
+LATENCY_WITHIN_LIMITS:
+  evidence:
+    - response_time
+    - percentile_latency_p95
+    - percentile_latency_p99
+  entity_type: SERVICE
+  verifiability: EXECUTABLE
+
+CONTAINER_EXISTS:
+  evidence:
+    - container_entity
+  entity_type: CONTAINER
+  verifiability: EXECUTABLE
+
+DEPENDENCY_EXISTS:
+  evidence:
+    - dependency_relationship
+  entity_type: DEPENDENCY
+  verifiability: EXECUTABLE
+
+NO_ACTIVE_PROBLEMS:
+  evidence:
+    - active_problems
+  entity_type: SERVICE
+  verifiability: EXECUTABLE
