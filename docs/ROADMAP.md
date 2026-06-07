@@ -685,3 +685,26 @@ Next
 □ Knowledge retrieval layer
 □ Atlas Vector Search
 □ Gemini Assurance Agent
+
+## Phase 2 - Agentic Assurance
+
+### Near-Term
+
+* Google Agent Builder integration
+* Agent-based assurance workflows
+* Executive assurance scorecards
+* Residual risk reporting
+
+### Mid-Term
+
+* Dynamic claim generation
+* Runtime-derived assurance plans
+* Dynamic evidence capability discovery
+* Multi-evidence-provider support
+
+### Long-Term
+
+* Autonomous assurance agents
+* Continuous compliance monitoring
+* Federated assurance ecosystems
+* Trust orchestration platform

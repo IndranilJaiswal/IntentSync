@@ -2064,3 +2064,47 @@ Generic adapter-based evidence collection engine.
 
 These remain useful as fallback/reference but are no longer the preferred partner MCP path.
 EOF
+
+## Production Architecture
+
+### dashboard_v2/app.py
+
+Primary Streamlit application.
+
+Responsibilities:
+
+* Requirement selection
+* Gemini claim discovery
+* PML review
+* Evidence collection
+* Assurance presentation
+
+### dynatrace_partner_mcp_client.py
+
+Interface to Dynatrace Partner MCP.
+
+Responsibilities:
+
+* MCP initialization
+* Tool invocation
+* Evidence retrieval
+
+### dynatrace_mcp_evidence_provider.py
+
+Runtime evidence adapter.
+
+Responsibilities:
+
+* Claim-to-evidence mapping
+* Evidence normalization
+* Assurance evidence generation
+
+### knowledge_retriever.py
+
+Knowledge retrieval layer.
+
+Responsibilities:
+
+* Governance knowledge retrieval
+* Claim discovery support
+* Requirement context enrichment

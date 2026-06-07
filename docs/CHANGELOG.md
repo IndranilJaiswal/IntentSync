@@ -309,3 +309,40 @@ EOF
 ### Strategic Direction
 
 This refactor transitions the platform from a technical assurance workflow prototype toward a scalable AI Systems Assurance Platform capable of supporting multiple systems, governed assurance workflows, and partner MCP-based evidence collection.
+## v0.1.0 - IntentSync Production Baseline
+
+### Platform Evolution
+
+* Renamed platform from AI Decision Assurance Platform to IntentSync
+* Introduced AI Systems Assurance Platform positioning
+* Established IntentSync product branding
+
+### Deployment
+
+* Created dedicated IntentSync repository
+* Deployed production instance to Google Cloud Run
+* Integrated MongoDB Atlas knowledge base
+* Integrated Dynatrace Partner MCP evidence collection
+
+### Assurance Workflow
+
+* Gemini Claim Discovery operational
+* PML Review workflow operational
+* Runtime evidence collection operational
+* Assurance evaluation operational
+* Assurance explanation operational
+
+### Production Validation
+
+Verified end-to-end workflow:
+
+Requirement
+→ Claims
+→ Governance
+→ Evidence
+→ Assurance
+
+### Release Status
+
+Production Baseline Established
+Version: v0.1.0
