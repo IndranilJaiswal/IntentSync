@@ -1,0 +1,61 @@
+openapi: 3.0.3
+info:
+  title: IntentSync API
+  version: 0.3.0
+  description: >
+    IntentSync is an AI Systems Assurance Platform that synchronizes
+    intent with reality through continuous assurance.
+
+servers:
+  - url: https://intentsync-api-933962237463.asia-southeast1.run.app
+
+paths:
+  /health:
+    get:
+      operationId: checkIntentSyncHealth
+      summary: Check IntentSync API health
+      responses:
+        "200":
+          description: API is healthy
+
+  /run-assurance:
+    post:
+      operationId: runAssurance
+      summary: Run assurance for a system requirement
+      description: >
+        Runs IntentSync assurance for a requirement by evaluating governed
+        claims against runtime evidence collected through Dynatrace Partner MCP.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - requirement_id
+              properties:
+                requirement_id:
+                  type: string
+                  description: Requirement identifier, for example REQ-001.
+                approved_governed_claim_ids:
+                  type: array
+                  nullable: true
+                  items:
+                    type: string
+                  description: Optional governed claim IDs to evaluate.
+                target_name:
+                  type: string
+                  default: easyTravel-Business
+                  description: Runtime target service name.
+      responses:
+        "200":
+          description: Assurance result
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  requirement:
+                    type: object
+                  assurance:
+                    type: object
