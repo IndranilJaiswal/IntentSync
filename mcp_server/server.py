@@ -1,53 +1,63 @@
 """
 IntentSync MCP Server
 
-Exposes IntentSync assurance capabilities as MCP tools for Google Agent Builder.
+Exposes IntentSync assurance capabilities as MCP tools for
+Google Agent Builder.
 
-Tool exposed:
+Tools:
 - run_assurance
-
-Architecture:
-Agent Builder
-    ↓
-IntentSync MCP Server
-    ↓
-IntentSync Assurance Service
-    ↓
-Dynatrace Partner MCP
-    ↓
-Runtime Evidence
+- discover_claims
+- generate_claim_review_package
 """
 
 import sys
 from pathlib import Path
+from typing import List, Optional
+
+from mcp.server.fastmcp import FastMCP
+
+# ---------------------------------------------------------
+# Backend Import Path
+# ---------------------------------------------------------
 
 ROOT_DIR = Path(__file__).resolve().parent
 APP_DIR = ROOT_DIR / "backend" / "app_v2"
 
 sys.path.insert(0, str(APP_DIR))
 
-from typing import List, Optional
-
-from mcp.server.fastmcp import FastMCP
-from claim_discovery_agent import ClaimDiscoveryAgent  # noqa: E402
-
-ROOT_DIR = Path(__file__).resolve().parent
-APP_DIR = ROOT_DIR / "backend" / "app_v2"
-sys.path.append(str(APP_DIR))
-
+# ---------------------------------------------------------
+# IntentSync Imports
+# ---------------------------------------------------------
 
 from assurance_service import (  # noqa: E402
     run_assurance_for_requirement,
     serialize_assurance_result,
 )
 
+from claim_discovery_agent import (  # noqa: E402
+    ClaimDiscoveryAgent,
+)
+
+from claim_review_package_builder import (  # noqa: E402
+    build_claim_review_packages,
+)
+
+from governance_approval_service import approve_claims
+
+# ---------------------------------------------------------
+# MCP Server
+# ---------------------------------------------------------
 
 mcp = FastMCP(
     name="IntentSync MCP",
     instructions=(
-        "IntentSync synchronizes intent with reality through continuous "
-        "assurance. Use run_assurance to verify whether a requirement is "
-        "supported by governed claims and runtime evidence."
+        "IntentSync synchronizes intent with reality through "
+        "continuous assurance. "
+        "Use run_assurance to verify requirements using runtime "
+        "evidence. "
+        "Use discover_claims to identify assurance claims. "
+        "Use generate_claim_review_package to create governance "
+        "review packages."
     ),
     host="0.0.0.0",
     port=8080,
@@ -57,6 +67,10 @@ mcp = FastMCP(
 )
 
 
+# ---------------------------------------------------------
+# Tool 1
+# ---------------------------------------------------------
+
 @mcp.tool()
 def run_assurance(
     requirement_id: str,
@@ -64,16 +78,10 @@ def run_assurance(
     target_name: str = "easyTravel-Business",
 ) -> dict:
     """
-    Run assurance for a system requirement.
-
-    Args:
-        requirement_id: Requirement identifier, for example REQ-001.
-        approved_governed_claim_ids: Optional governed claim IDs to evaluate.
-        target_name: Runtime target service name.
+    Run assurance for a requirement.
 
     Returns:
-        JSON-safe assurance result with requirement status, claim results,
-        and Dynatrace Partner MCP evidence summary.
+        Requirement assurance result with evidence.
     """
 
     result = run_assurance_for_requirement(
@@ -84,20 +92,26 @@ def run_assurance(
 
     return serialize_assurance_result(result)
 
+
+# ---------------------------------------------------------
+# Tool 2
+# ---------------------------------------------------------
+
 @mcp.tool()
-def discover_claims(requirement_text: str) -> dict:
+def discover_claims(
+    requirement_text: str,
+) -> dict:
     """
     Discover assurance claims required to assure a requirement.
 
-    Args:
-        requirement_text: Natural language requirement text.
-
     Returns:
-        Candidate assurance claims with rationale, business impact,
-        and governance need.
+        Candidate claims with rationale,
+        business impact,
+        governance need.
     """
 
     agent = ClaimDiscoveryAgent()
+
     suggestions = agent.discover(requirement_text)
 
     return {
@@ -132,5 +146,56 @@ def discover_claims(requirement_text: str) -> dict:
     }
 
 
+# ---------------------------------------------------------
+# Tool 3
+# ---------------------------------------------------------
+
+@mcp.tool()
+def generate_claim_review_package(
+    requirement_text: str,
+) -> dict:
+    """
+    Generate governance-ready claim review packages.
+
+    Workflow:
+        Requirement
+            ↓
+        Claim Discovery
+            ↓
+        Review Package Generation
+            ↓
+        Governance Routing
+    """
+
+    agent = ClaimDiscoveryAgent()
+
+    suggestions = agent.discover(requirement_text)
+
+    return build_claim_review_packages(
+        requirement_text=requirement_text,
+        suggestions=suggestions,
+    )
+
+@mcp.tool()
+def approve_claims_for_assurance(
+    claim_ids: list[str],
+    approver: str = "PML",
+) -> dict:
+    """
+    Approve claims for governed assurance execution.
+    """
+
+    return approve_claims(
+        claim_ids=claim_ids,
+        approver=approver,
+    )
+
+
+# ---------------------------------------------------------
+# Main
+# ---------------------------------------------------------
+
 if __name__ == "__main__":
-    mcp.run(transport="streamable-http")
+    mcp.run(
+        transport="streamable-http",
+    )
