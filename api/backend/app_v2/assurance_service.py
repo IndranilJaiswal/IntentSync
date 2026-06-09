@@ -6,6 +6,10 @@ Shared IntentSync assurance execution service.
 Used by:
 - Streamlit dashboard
 - FastAPI service for Agent Builder
+
+Purpose:
+Expose the core assurance workflow in one reusable place so both the
+dashboard and Agent Builder API call the same assurance logic.
 """
 
 from claim_assurance_engine import ClaimAssuranceEngine
@@ -95,6 +99,11 @@ def run_assurance_for_requirement(
 def serialize_assurance_result(result: dict) -> dict:
     """
     Convert assurance result objects into JSON-safe API response.
+
+    This response is intentionally Agent Builder friendly:
+    - keeps claim status, confidence, and evidence summary
+    - removes huge raw Dynatrace MCP responses
+    - preserves enough traceability to prove evidence came from Dynatrace MCP
     """
 
     requirement = result["requirement"]
@@ -125,7 +134,19 @@ def serialize_assurance_result(result: dict) -> dict:
                         "source": evidence.source,
                         "observed": evidence.observed,
                         "value": evidence.value,
-                        "details": evidence.details,
+                        "evidence_summary": {
+                            "provider": evidence.details.get(
+                                "mcp_provider",
+                                evidence.source,
+                            ),
+                            "tool": evidence.details.get(
+                                "mcp_tool",
+                                evidence.details.get("mcp_tools"),
+                            ),
+                            "records_returned": evidence.details.get(
+                                "records_returned",
+                            ),
+                        },
                     }
                     for evidence in evidence_records
                 ],
