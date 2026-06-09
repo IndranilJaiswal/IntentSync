@@ -1,0 +1,43 @@
+# ============================================================================
+# Service Availability Policy
+#
+# Purpose:
+# Define assurance objectives for business-critical customer-facing services.
+#
+# Future:
+# Multiple policies will be supported and loaded dynamically.
+# ============================================================================
+
+policy_id: POL-001
+
+name: Service Availability Policy
+
+description: >
+  Business-critical customer-facing services must remain
+  available, observable, and operational.
+
+objectives:
+
+  - objective_id: OBJ-001
+
+    description: >
+      Business-critical services must exist in operational reality.
+
+    suggested_claims:
+      - SERVICE_EXISTS
+
+  - objective_id: OBJ-002
+
+    description: >
+      Business-critical services must remain healthy.
+
+    suggested_claims:
+      - SERVICE_HEALTHY
+
+  - objective_id: OBJ-003
+
+    description: >
+      Business-critical services should not have active operational issues.
+
+    suggested_claims:
+      - NO_ACTIVE_PROBLEMS

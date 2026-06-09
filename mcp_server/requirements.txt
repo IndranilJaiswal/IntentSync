@@ -1,0 +1,6 @@
+mcp==1.27.2
+requests==2.34.2
+python-dotenv==1.2.2
+PyYAML==6.0.3
+pymongo==4.17.0
+google-genai==2.8.0
