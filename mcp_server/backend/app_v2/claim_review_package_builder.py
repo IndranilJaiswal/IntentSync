@@ -8,11 +8,12 @@ Convert Gemini claim suggestions into explainable governance packages
 before they can enter assurance execution.
 """
 
+from capability_metrics import calculate_assurance_readiness
+from capability_registry import get_claim_capability
 from claim_library import load_claim_library
 from claim_review_models import ClaimReviewPackage
 from knowledge_retriever import KnowledgeRetriever
 from pml_governance_router import route_claim_review_package
-from capability_registry import get_claim_capability
 
 
 def _claim_exists_in_library(claim_id: str) -> bool:
@@ -245,38 +246,10 @@ def build_claim_review_packages(
         for suggestion in suggestions
     ]
 
-    executable = [
-        package
-        for package in packages
-        if package["executability"] == "EXECUTABLE"
-    ]
-
-    partial = [
-        package
-        for package in packages
-        if package["executability"] == "PARTIALLY_EXECUTABLE"
-    ]
-
-    claim_defined = [
-        package
-        for package in packages
-        if package["executability"] == "CLAIM_DEFINED"
-    ]
-
-    coverage_gaps = [
-        package
-        for package in packages
-        if package["executability"] == "COVERAGE_GAP"
-    ]
+    metrics = calculate_assurance_readiness(packages)
 
     return {
         "requirement_text": requirement_text,
         "review_packages": packages,
-        "summary": {
-            "total_claims": len(packages),
-            "executable_claims": len(executable),
-            "partially_executable_claims": len(partial),
-            "claim_defined": len(claim_defined),
-            "coverage_gaps": len(coverage_gaps),
-        },
+        "summary": metrics,
     }

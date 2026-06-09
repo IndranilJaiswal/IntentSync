@@ -44,6 +44,12 @@ from claim_review_package_builder import (  # noqa: E402
 
 from governance_approval_service import approve_claims
 from requirement_resolver import resolve_requirement as resolve_requirement_service  # noqa: E402
+from governance_approval_service import approve_claims
+from governance_approval_service import ( # noqa: E402
+approve_claims,
+approve_and_promote_claim,
+)
+
 # ---------------------------------------------------------
 # MCP Server
 # ---------------------------------------------------------
@@ -200,6 +206,42 @@ def resolve_requirement(requirement_text: str) -> dict:
         requirement_text=requirement_text,
     )
 
+@mcp.tool()
+def approve_and_promote_claim(
+    claim_id: str,
+    approved_by: str,
+    rationale: str,
+):
+    """
+    Approve a coverage-gap claim and promote it into
+    the governed claim library.
+    """
+
+    return approve_claims(
+        claim_id=claim_id,
+        approved_by=approved_by,
+        rationale=rationale,
+    )
+
+@mcp.tool()
+def approve_and_promote_claim_for_governance(
+    claim_id: str,
+    approved_by: str = "PML",
+    rationale: str = "",
+) -> dict:
+    """
+    Approve a discovered claim and promote it into governed knowledge.
+
+    This does not automatically make the claim executable.
+    The capability matrix determines whether the claim is executable,
+    partially executable, or only claim-defined.
+    """
+
+    return approve_and_promote_claim(
+        claim_id=claim_id,
+        approved_by=approved_by,
+        rationale=rationale,
+    )
 # ---------------------------------------------------------
 # Main
 # ---------------------------------------------------------
