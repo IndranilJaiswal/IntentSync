@@ -3,6 +3,12 @@ SERVICE_EXISTS:
     - service_entity
   entity_type: SERVICE
   verifiability: EXECUTABLE
+  assurance_logic: true
+  evidence_provider: dynatrace_mcp
+  mcp_capabilities:
+    - get-entity-id
+  missing_capabilities: []
+  executability: EXECUTABLE
 
 SERVICE_HEALTHY:
   evidence:
@@ -11,6 +17,14 @@ SERVICE_HEALTHY:
     - active_problems
   entity_type: SERVICE
   verifiability: EXECUTABLE
+  assurance_logic: true
+  evidence_provider: dynatrace_mcp
+  mcp_capabilities:
+    - response_time
+    - failure_rate
+    - active_problems
+  missing_capabilities: []
+  executability: EXECUTABLE
 
 SERVICE_SCALABLE:
   evidence:
@@ -19,6 +33,14 @@ SERVICE_SCALABLE:
     - request_throughput
   entity_type: SERVICE
   verifiability: EXECUTABLE
+  assurance_logic: true
+  evidence_provider: dynatrace_mcp
+  mcp_capabilities:
+    - service_instance_count
+    - cpu_utilization
+    - request_throughput
+  missing_capabilities: []
+  executability: EXECUTABLE
 
 SERVICE_REDUNDANT:
   evidence:
@@ -26,6 +48,13 @@ SERVICE_REDUNDANT:
     - host_count
   entity_type: SERVICE
   verifiability: EXECUTABLE
+  assurance_logic: true
+  evidence_provider: dynatrace_mcp
+  mcp_capabilities:
+    - service_instance_count
+    - host_count
+  missing_capabilities: []
+  executability: EXECUTABLE
 
 SERVICE_RECOVERABLE:
   evidence:
@@ -34,6 +63,14 @@ SERVICE_RECOVERABLE:
     - recent_availability
   entity_type: SERVICE
   verifiability: EXECUTABLE
+  assurance_logic: true
+  evidence_provider: dynatrace_mcp
+  mcp_capabilities:
+    - active_problems
+  missing_capabilities:
+    - restart_events
+    - recent_availability
+  executability: PARTIALLY_EXECUTABLE
 
 DEPENDENCY_AVAILABLE:
   evidence:
@@ -42,6 +79,14 @@ DEPENDENCY_AVAILABLE:
     - dependency_response_time
   entity_type: DEPENDENCY
   verifiability: EXECUTABLE
+  assurance_logic: true
+  evidence_provider: dynatrace_mcp
+  mcp_capabilities:
+    - dependency_entity
+    - dependency_call_success_rate
+    - dependency_response_time
+  missing_capabilities: []
+  executability: EXECUTABLE
 
 LOAD_BALANCER_OPERATIONAL:
   evidence:
@@ -50,6 +95,14 @@ LOAD_BALANCER_OPERATIONAL:
     - request_distribution
   entity_type: LOAD_BALANCER
   verifiability: EXECUTABLE
+  assurance_logic: true
+  evidence_provider: dynatrace_mcp
+  mcp_capabilities:
+    - load_balancer_entity
+    - backend_service_count
+    - request_distribution
+  missing_capabilities: []
+  executability: EXECUTABLE
 
 CAPACITY_SUFFICIENT:
   evidence:
@@ -59,6 +112,15 @@ CAPACITY_SUFFICIENT:
     - request_throughput
   entity_type: SERVICE
   verifiability: EXECUTABLE
+  assurance_logic: true
+  evidence_provider: dynatrace_mcp
+  mcp_capabilities:
+    - cpu_utilization
+    - memory_utilization
+    - disk_utilization
+    - request_throughput
+  missing_capabilities: []
+  executability: EXECUTABLE
 
 LATENCY_WITHIN_LIMITS:
   evidence:
@@ -67,21 +129,95 @@ LATENCY_WITHIN_LIMITS:
     - percentile_latency_p99
   entity_type: SERVICE
   verifiability: EXECUTABLE
+  assurance_logic: true
+  evidence_provider: dynatrace_mcp
+  mcp_capabilities:
+    - response_time
+    - percentile_latency_p95
+    - percentile_latency_p99
+  missing_capabilities: []
+  executability: EXECUTABLE
 
 CONTAINER_EXISTS:
   evidence:
     - container_entity
   entity_type: CONTAINER
   verifiability: EXECUTABLE
+  assurance_logic: true
+  evidence_provider: dynatrace_mcp
+  mcp_capabilities:
+    - container_entity
+  missing_capabilities: []
+  executability: EXECUTABLE
 
 DEPENDENCY_EXISTS:
   evidence:
     - dependency_relationship
   entity_type: DEPENDENCY
   verifiability: EXECUTABLE
+  assurance_logic: true
+  evidence_provider: dynatrace_mcp
+  mcp_capabilities:
+    - dependency_relationship
+  missing_capabilities: []
+  executability: EXECUTABLE
 
 NO_ACTIVE_PROBLEMS:
   evidence:
     - active_problems
   entity_type: SERVICE
   verifiability: EXECUTABLE
+  assurance_logic: true
+  evidence_provider: dynatrace_mcp
+  mcp_capabilities:
+    - active_problems
+  missing_capabilities: []
+  executability: EXECUTABLE
+
+SERVICE_MONITORED:
+  evidence:
+    - telemetry_collection
+    - metric_stream
+    - alerting_config
+  entity_type: SERVICE
+  verifiability: NOT_DEFINED
+  assurance_logic: false
+  evidence_provider: none
+  mcp_capabilities: []
+  missing_capabilities:
+    - telemetry_collection
+    - metric_stream
+    - alerting_config
+  executability: COVERAGE_GAP
+
+SERVICE_LOGGED:
+  evidence:
+    - centralized_logging
+    - log_ingestion
+    - log_retention
+  entity_type: SERVICE
+  verifiability: NOT_DEFINED
+  assurance_logic: false
+  evidence_provider: none
+  mcp_capabilities: []
+  missing_capabilities:
+    - centralized_logging
+    - log_ingestion
+    - log_retention
+  executability: COVERAGE_GAP
+
+SERVICE_TESTABLE:
+  evidence:
+    - health_check_endpoint
+    - synthetic_test_result
+    - smoke_test_result
+  entity_type: SERVICE
+  verifiability: NOT_DEFINED
+  assurance_logic: false
+  evidence_provider: none
+  mcp_capabilities: []
+  missing_capabilities:
+    - health_check_endpoint
+    - synthetic_test_result
+    - smoke_test_result
+  executability: COVERAGE_GAP

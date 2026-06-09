@@ -3,19 +3,6 @@ claim_discovery_agent.py
 
 Purpose:
 Convert requirements into ClaimSuggestion objects using Gemini reasoning.
-
-Workflow:
-Requirement
-↓
-Knowledge Retrieval
-↓
-Gemini
-↓
-ClaimSuggestion with rationale, business impact, and governance need
-
-Author:
-Indranil Jaiswal
-AI Assurance Platform
 """
 
 import json
@@ -28,15 +15,6 @@ from claim_suggestion_models import ClaimSuggestion
 class ClaimDiscoveryAgent:
     """
     Gemini-backed claim discovery agent.
-
-    This agent reasons over:
-    - the requirement text
-    - known claim patterns from the knowledge base
-
-    It returns ClaimSuggestion objects enriched with:
-    - rationale
-    - business impact
-    - governance need
     """
 
     def __init__(self):
@@ -63,6 +41,10 @@ Known Claims:
 Task:
 Suggest claims needed to assure the requirement.
 
+Important:
+Prefer claims from the Known Claims list whenever they reasonably fit the requirement.
+Only create a new claim_id if no known claim can express the assurance need.
+
 Rules:
 - Return valid JSON only.
 - Return a JSON array.
@@ -72,16 +54,18 @@ Rules:
   - business_impact
   - governance_need
 - Use uppercase claim naming.
+- Prefer known executable claims first.
+- Do not invent new claim IDs unless necessary.
 - Do not include markdown.
 - Do not wrap the JSON in code fences.
 
 Example:
 [
   {{
-    "claim_id": "SERVICE_REDUNDANT",
-    "rationale": "Redundancy is required to reduce single points of failure.",
-    "business_impact": "Without redundancy, service interruption may affect business continuity.",
-    "governance_need": "PML should confirm whether redundancy is required for this requirement."
+    "claim_id": "SERVICE_HEALTHY",
+    "rationale": "Service health must be verified to assure that the service remains operational during runtime.",
+    "business_impact": "If service health is not assured, customer booking failures may go undetected.",
+    "governance_need": "PML should confirm whether service health is required for this requirement."
   }}
 ]
 """
@@ -112,7 +96,6 @@ Example:
         suggestions = []
 
         for item in parsed_claims:
-
             claim_id = item.get("claim_id", "").strip()
 
             if not claim_id:
@@ -125,8 +108,7 @@ Example:
 
             business_impact = item.get(
                 "business_impact",
-                "If this claim is not assured, the requirement may not be "
-                "fully supported.",
+                "If this claim is not assured, the requirement may not be fully supported.",
             )
 
             governance_need = item.get(

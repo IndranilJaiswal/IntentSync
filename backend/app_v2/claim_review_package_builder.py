@@ -12,6 +12,7 @@ from claim_library import load_claim_library
 from claim_review_models import ClaimReviewPackage
 from knowledge_retriever import KnowledgeRetriever
 from pml_governance_router import route_claim_review_package
+from capability_registry import get_claim_capability
 
 
 def _claim_exists_in_library(claim_id: str) -> bool:
@@ -142,18 +143,28 @@ def build_claim_review_package(
 
     is_supported = _claim_exists_in_library(claim_id)
 
-    coverage_status = (
-        "SUPPORTED"
-        if is_supported
-        else "COVERAGE_GAP"
-    )
+    capability = get_claim_capability(claim_id)
+
+    coverage_status = capability["executability"]
 
     coverage_gap_reason = None
 
-    if not is_supported:
+    if coverage_status == "COVERAGE_GAP":
         coverage_gap_reason = (
             "No executable claim definition exists in the governed "
-            "claim library."
+            "claim library or assurance capability matrix."
+        )
+
+    elif coverage_status == "PARTIALLY_EXECUTABLE":
+        coverage_gap_reason = (
+            "Claim is defined but some required evidence capabilities "
+            "are currently unavailable."
+        )
+
+    elif coverage_status == "CLAIM_DEFINED":
+        coverage_gap_reason = (
+            "Claim exists but executable assurance logic has not yet "
+            "been implemented."
         )
 
     package = ClaimReviewPackage(
@@ -202,6 +213,19 @@ def build_claim_review_package(
         "coverage_status": package.coverage_status,
         "coverage_gap_reason": package.coverage_gap_reason,
         "governance_route": governance_route,
+
+        # Capability Matrix Fields
+        "verifiability": capability["verifiability"],
+        "executability": capability["executability"],
+        "entity_type": capability["entity_type"],
+        "assurance_logic": capability["assurance_logic"],
+        "evidence_provider": capability["evidence_provider"],
+        "required_evidence": capability["evidence"],
+        "mcp_capabilities": capability["mcp_capabilities"],
+        "missing_capabilities": capability["missing_capabilities"],
+
+        # Legacy compatibility
+        "claim_supported": is_supported,
     }
 
 
@@ -221,16 +245,28 @@ def build_claim_review_packages(
         for suggestion in suggestions
     ]
 
-    supported_claims = [
+    executable = [
         package
         for package in packages
-        if package["coverage_status"] == "SUPPORTED"
+        if package["executability"] == "EXECUTABLE"
+    ]
+
+    partial = [
+        package
+        for package in packages
+        if package["executability"] == "PARTIALLY_EXECUTABLE"
+    ]
+
+    claim_defined = [
+        package
+        for package in packages
+        if package["executability"] == "CLAIM_DEFINED"
     ]
 
     coverage_gaps = [
         package
         for package in packages
-        if package["coverage_status"] == "COVERAGE_GAP"
+        if package["executability"] == "COVERAGE_GAP"
     ]
 
     return {
@@ -238,7 +274,9 @@ def build_claim_review_packages(
         "review_packages": packages,
         "summary": {
             "total_claims": len(packages),
-            "supported_claims": len(supported_claims),
+            "executable_claims": len(executable),
+            "partially_executable_claims": len(partial),
+            "claim_defined": len(claim_defined),
             "coverage_gaps": len(coverage_gaps),
         },
     }
