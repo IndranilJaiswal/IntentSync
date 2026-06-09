@@ -43,7 +43,7 @@ from claim_review_package_builder import (  # noqa: E402
 )
 
 from governance_approval_service import approve_claims
-
+from requirement_resolver import resolve_requirement as resolve_requirement_service  # noqa: E402
 # ---------------------------------------------------------
 # MCP Server
 # ---------------------------------------------------------
@@ -190,6 +190,15 @@ def approve_claims_for_assurance(
         approver=approver,
     )
 
+@mcp.tool()
+def resolve_requirement(requirement_text: str) -> dict:
+    """
+    Resolve natural language requirement text to a known requirement ID.
+    """
+
+    return resolve_requirement_service(
+        requirement_text=requirement_text,
+    )
 
 # ---------------------------------------------------------
 # Main
