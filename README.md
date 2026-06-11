@@ -1,71 +1,188 @@
-# IntentSync
+# 🎯 IntentSync
 
-## AI Systems Assurance Platform
+## Synchronizing Intent with Reality Through Continuous Assurance
 
-### Synchronizing Intent with Reality Through Continuous Assurance
+IntentSync is an AI-powered Decision Assurance platform that continuously verifies whether operational reality satisfies business intent.
 
-IntentSync is an AI Systems Assurance Platform that continuously evaluates whether system intent is supported by observable runtime evidence.
+Built using Google Gemini, Google Cloud, Agent Builder-compatible MCP integrations, MongoDB, and Dynatrace.
 
-The platform transforms requirements into governed assurance claims, validates those claims using runtime evidence, and produces assurance outcomes with full traceability.
+Instead of asking:
 
-## Core Workflow
+> What is happening?
+
+IntentSync answers:
+
+> Are we achieving the outcome we intended?
+
+---
+
+## Problem
+
+Organizations define requirements such as:
+
+> The customer booking service must remain observable and healthy during runtime.
+
+Monitoring tools provide metrics, logs, and alerts.
+
+However, they cannot directly answer:
+
+> Is the requirement actually being satisfied?
+
+IntentSync closes that gap.
+
+---
+
+## Solution
 
 Requirement
-→ Claim Discovery
-→ PML Review
-→ Evidence Collection
-→ Assurance Evaluation
-→ Assurance Explanation
 
-## Key Capabilities
+↓
 
-* AI-assisted claim discovery using Gemini
-* Governed claim approval through PML Review
-* Runtime evidence collection through Dynatrace Partner MCP
-* Continuous assurance evaluation
-* Executive assurance reporting
-* Traceable requirement-to-evidence relationships
+Claims
+
+↓
+
+Governance
+
+↓
+
+Evidence
+
+↓
+
+Assurance
+
+The platform converts human intent into executable assurance workflows backed by runtime evidence.
+
+---
+
+## Google Cloud x Gemini Hackathon
+
+IntentSync demonstrates:
+
+- Gemini reasoning
+- Governance-aware AI workflows
+- Agent Builder compatible MCP architecture
+- Dynatrace Partner MCP integration
+- Runtime evidence collection
+- Explainable assurance outcomes
+
+---
 
 ## Architecture
 
-Intent
+Requirement
+
 ↓
-Requirements
+
+Gemini Claim Discovery
+
 ↓
-Claims
+
+Governance Review
+
 ↓
-Governance
+
+Capability Validation
+
 ↓
-Evidence
+
+Partner MCP Evidence Collection
+
 ↓
-Assurance
+
+Claim Assurance
+
 ↓
-Decision Support
+
+Requirement Assurance
+
+↓
+
+Assurance Explanation
+
+---
+
+## Partner MCP Integration
+
+Dynatrace Hosted MCP provides:
+
+- Service existence
+- Service health
+- Active incidents
+- Response time
+- Failure rate
+- P95 latency
+- P99 latency
+
+MCP tools used:
+
+- get-entity-id
+- query-problems
+- create-dql
+- execute-dql
+
+---
+
+## Example Workflow
+
+Requirement:
+
+"The customer booking service must remain observable and healthy during runtime."
+
+Discovered Claims:
+
+- SERVICE_EXISTS
+- SERVICE_HEALTHY
+- SERVICE_OBSERVABLE
+
+Governance Outcome:
+
+- SERVICE_EXISTS → Executable
+- SERVICE_HEALTHY → Executable
+- SERVICE_OBSERVABLE → Governed Claim Defined
+
+Runtime Evidence:
+
+- Dynatrace runtime telemetry
+- Service inventory
+- Active incidents
+- Performance metrics
+
+Assurance Outcomes:
+
+- VERIFIED
+- FAILED
+- PARTIALLY_ASSURED
+- INSUFFICIENT_EVIDENCE
+
+---
 
 ## Technology Stack
 
-* Streamlit
-* Google Gemini
-* MongoDB Atlas
-* Dynatrace Partner MCP
-* Google Cloud Run
+- Google Gemini
+- Google Cloud Run
+- Agent Builder Compatible MCP Services
+- Dynatrace Hosted MCP
+- MongoDB Atlas
+- Python
+- Streamlit
 
-## Deployment
+---
 
-Production URL:
+## Hosted Demo
 
-https://intentsync-933962237463.asia-southeast1.run.app
+Dashboard:
 
-## Current Status
+https://intentsync-demo-933962237463.us-central1.run.app
 
-IntentSync v0.1
+MCP:
 
-Production baseline established.
+https://intentsync-mcp-demo-933962237463.us-central1.run.app/mcp
 
-Verified:
+---
 
-* Gemini Claim Discovery
-* PML Review Workflow
-* Dynatrace Partner MCP Integration
-* Continuous Assurance Evaluation
-* Google Cloud Run Deployment
+## Open Source License
+
+Apache License 2.0
+
