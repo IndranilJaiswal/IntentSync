@@ -176,9 +176,6 @@ Dashboard:
 
 https://intentsync-demo-933962237463.us-central1.run.app
 
-MCP:
-
-https://intentsync-mcp-demo-933962237463.us-central1.run.app/mcp
 
 ---
 
