@@ -1,25 +1,19 @@
 """
-AI Systems Assurance Platform Dashboard
+IntentSync Dashboard
+
+Synchronizing Intent with Reality Through Continuous Assurance.
 
 Visible flow:
 
 Requirement
 ↓
-Existing Executable Claims
+Claim Discovery
 ↓
-Gemini Claim Discovery
+Governance Review
 ↓
-PML Claim Mapping Agent
+Capability Validation
 ↓
-AI Decision Trace: Reason / Plan / Act
-↓
-Coverage Assessment
-↓
-PML Review
-↓
-Current Governed Assurance Scope
-↓
-Dynatrace Partner MCP Evidence Collection
+Partner MCP Evidence Collection
 ↓
 Claim Assurance
 ↓
@@ -54,14 +48,29 @@ from requirement_library import load_requirements
 
 
 st.set_page_config(
-    page_title="AI Systems Assurance Platform",
+    page_title="IntentSync",
     layout="wide",
 )
 
-st.title("AI Systems Assurance Platform")
+st.title("🎯 IntentSync")
 st.caption(
-    "Governed system assurance using AI reasoning, PML approval, "
-    "and runtime evidence collected through partner MCP integrations."
+    "Synchronizing Intent with Reality Through Continuous Assurance"
+)
+
+st.info(
+    "Requirement → Claims → Governance → Evidence → Assurance"
+)
+
+st.markdown(
+    """
+### Transform Requirements into Assured Outcomes
+
+IntentSync uses Gemini and Partner MCP integrations to discover assurance claims,
+route them through governance, collect runtime evidence, and continuously assure
+whether business intent is being satisfied.
+
+**Built with:** Google Gemini • Google Cloud Run • Agent Builder MCP • Dynatrace MCP
+"""
 )
 
 
@@ -470,15 +479,15 @@ def render_ai_decision_trace(
         if item["coverage_status"] == "COVERAGE_GAP"
     ]
 
-    st.markdown("## AI Decision Trace")
+    st.markdown("## Intent Resolution Trace")
 
     reason_col, plan_col, act_col = st.columns(3)
 
     with reason_col:
         st.subheader("Reason")
         st.write(
-            "Gemini reasons over the requirement and claim patterns retrieved "
-            "from the knowledge base."
+            "Gemini reasons over the requirement and known claim patterns "
+            "to identify what must be assured."
         )
         st.metric("Gemini Claims", len(gemini_claims))
         st.metric("Existing Executable Claims", len(existing_claims))
@@ -486,7 +495,7 @@ def render_ai_decision_trace(
     with plan_col:
         st.subheader("Plan")
         st.write(
-            "The platform plans assurance by separating executable claims, "
+            "IntentSync plans assurance by separating executable claims, "
             "mapping candidates, and coverage gaps."
         )
         st.metric("Supported Claims", len(supported_claims))
@@ -496,8 +505,8 @@ def render_ai_decision_trace(
     with act_col:
         st.subheader("Act")
         st.write(
-            "The platform acts through the hosted Dynatrace Partner MCP "
-            "server only after PML-approved governed claims enter scope."
+            "IntentSync acts through the hosted Dynatrace Partner MCP "
+            "server after governed claims enter assurance scope."
         )
         st.metric("Approved for Evidence", len(approved_claim_ids))
         st.write("Dynatrace MCP evidence is requested only for approved claims.")
@@ -830,7 +839,7 @@ def render_requirement_result(item):
     requirement_result = item["requirement_result"]
     evidence_by_claim = item["evidence_by_claim"]
 
-    st.markdown("## Requirement Assurance Result")
+    st.markdown("## Intent Assurance Result")
 
     with st.container(border=True):
         st.subheader(requirement.title)
@@ -1214,3 +1223,10 @@ else:
 if "last_assurance_result" in st.session_state:
     st.divider()
     render_requirement_result(st.session_state["last_assurance_result"])
+st.divider()
+st.caption(
+    "IntentSync • Requirement → Claims → Governance → Evidence → Assurance"
+)
+st.caption(
+    "Powered by Gemini, Google Cloud, Agent Builder MCP and Dynatrace."
+)
